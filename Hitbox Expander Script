@@ -1,0 +1,201 @@
+-- 👹 Hitbox Expander GUI by @alexpereahectorYt (Permanent + Unlimited Size)
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Create GUI (Parented to PlayerGui for persistence)
+local playerGui = LocalPlayer:WaitForChild("PlayerGui")
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "HitboxExpanderGUI"
+screenGui.ResetOnSpawn = false -- keeps GUI after reset
+screenGui.Parent = playerGui
+
+-- Main Frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 250, 0, 230)
+mainFrame.Position = UDim2.new(0, 20, 0, 20)
+mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = mainFrame
+
+-- Title Bar
+local titleBar = Instance.new("Frame")
+titleBar.Size = UDim2.new(1, 0, 0, 30)
+titleBar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+titleBar.Parent = mainFrame
+
+local titleCorner = Instance.new("UICorner")
+titleCorner.CornerRadius = UDim.new(0, 10)
+titleCorner.Parent = titleBar
+
+-- Title Label
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0.7, 0, 1, 0)
+title.Position = UDim2.new(0, 10, 0, 0)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Text = "Hitbox Expander GUI"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 14
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = titleBar
+
+-- Minimize Button
+local minimize = Instance.new("TextButton")
+minimize.Size = UDim2.new(0, 50, 0, 20)
+minimize.Position = UDim2.new(0.7, 0, 0.15, 0)
+minimize.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+minimize.Text = "👇"
+minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimize.Font = Enum.Font.GothamBold
+minimize.TextSize = 14
+minimize.Parent = titleBar
+
+local minimizeCorner = Instance.new("UICorner")
+minimizeCorner.CornerRadius = UDim.new(0, 6)
+minimizeCorner.Parent = minimize
+
+-- Maximize Button
+local maximize = Instance.new("TextButton")
+maximize.Size = UDim2.new(0, 50, 0, 20)
+maximize.Position = UDim2.new(0.85, 0, 0.15, 0)
+maximize.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+maximize.Text = "👆"
+maximize.TextColor3 = Color3.fromRGB(255, 255, 255)
+maximize.Font = Enum.Font.GothamBold
+maximize.TextSize = 14
+maximize.Visible = false
+maximize.Parent = titleBar
+
+local maximizeCorner = Instance.new("UICorner")
+maximizeCorner.CornerRadius = UDim.new(0, 6)
+maximizeCorner.Parent = maximize
+
+-- Content Frame
+local contentFrame = Instance.new("Frame")
+contentFrame.Size = UDim2.new(1, 0, 1, -30)
+contentFrame.Position = UDim2.new(0, 0, 0, 30)
+contentFrame.BackgroundTransparency = 1
+contentFrame.Parent = mainFrame
+
+-- Toggle Button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0.8, 0, 0, 50)
+toggleButton.Position = UDim2.new(0.1, 0, 0.15, 0)
+toggleButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Text = "Enable Hitbox"
+toggleButton.Font = Enum.Font.GothamBold
+toggleButton.TextSize = 16
+toggleButton.Parent = contentFrame
+
+local toggleCorner = Instance.new("UICorner")
+toggleCorner.CornerRadius = UDim.new(0, 8)
+toggleCorner.Parent = toggleButton
+
+-- Textbox for Size Input
+local sizeBox = Instance.new("TextBox")
+sizeBox.Size = UDim2.new(0.6, 0, 0, 30)
+sizeBox.Position = UDim2.new(0.2, 0, 0.45, 0)
+sizeBox.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+sizeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+sizeBox.PlaceholderText = "Enter Hitbox Size"
+sizeBox.Text = ""
+sizeBox.Font = Enum.Font.Gotham
+sizeBox.TextSize = 13
+sizeBox.Parent = contentFrame
+
+local sizeCorner = Instance.new("UICorner")
+sizeCorner.CornerRadius = UDim.new(0, 6)
+sizeCorner.Parent = sizeBox
+
+-- Status Label
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Size = UDim2.new(1, 0, 0, 20)
+statusLabel.Position = UDim2.new(0, 0, 0.72, 0)
+statusLabel.BackgroundTransparency = 1
+statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+statusLabel.Text = "Status: Disabled"
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.TextSize = 13
+statusLabel.Parent = contentFrame
+
+-- Credits
+local creditLabel = Instance.new("TextLabel")
+creditLabel.Size = UDim2.new(1, 0, 0, 20)
+creditLabel.Position = UDim2.new(0, 0, 0.9, 0)
+creditLabel.BackgroundTransparency = 1
+creditLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+creditLabel.Text = "👹 Made by @alexpereahectorYt"
+creditLabel.Font = Enum.Font.Gotham
+creditLabel.TextSize = 12
+creditLabel.Parent = contentFrame
+
+-- Logic
+local enabled = false
+_G.HeadSize = 20
+
+toggleButton.MouseButton1Click:Connect(function()
+	enabled = not enabled
+	if enabled then
+		toggleButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+		toggleButton.Text = "Disable Hitbox"
+		statusLabel.Text = "Status: Enabled 👹"
+	else
+		toggleButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+		toggleButton.Text = "Enable Hitbox"
+		statusLabel.Text = "Status: Disabled"
+	end
+end)
+
+-- Update Size from Textbox (No max limit)
+sizeBox.FocusLost:Connect(function(enterPressed)
+	if enterPressed then
+		local size = tonumber(sizeBox.Text)
+		if size and size > 0 then
+			_G.HeadSize = size
+			statusLabel.Text = "Hitbox size set to: " .. size
+		else
+			statusLabel.Text = "⚠️ Invalid size"
+		end
+	end
+end)
+
+-- Apply Hitbox Expansion
+game:GetService("RunService").RenderStepped:Connect(function()
+	if enabled then
+		for _, v in pairs(Players:GetPlayers()) do
+			if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+				pcall(function()
+					v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
+					v.Character.HumanoidRootPart.Transparency = 0.6
+					v.Character.HumanoidRootPart.Material = Enum.Material.Neon
+					v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really red")
+					v.Character.HumanoidRootPart.CanCollide = false
+				end)
+			end
+		end
+	end
+end)
+
+-- Minimize / Maximize logic
+local minimized = false
+minimize.MouseButton1Click:Connect(function()
+	minimized = true
+	contentFrame.Visible = false
+	mainFrame.Size = UDim2.new(0, 250, 0, 30)
+	minimize.Visible = false
+	maximize.Visible = true
+end)
+
+maximize.MouseButton1Click:Connect(function()
+	minimized = false
+	contentFrame.Visible = true
+	mainFrame.Size = UDim2.new(0, 250, 0, 230)
+	maximize.Visible = false
+	minimize.Visible = true
+end)
